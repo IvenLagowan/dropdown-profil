@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Profile Dropdown</title>
+
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+  --bg: #f3f4f6;
+  --card: #ffffff;
+  --text: #111;
+}
+
+body.dark {
+  --bg: #111827;
+  --card: #1f2937;
+  --text: #fff;
+}
+
+body {
+  margin: 0;
+  font-family: Arial;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 30px;
+  background: var(--card);
+}
+
+.profile {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 50%;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 60px;
+  width: 270px;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: .3s;
+}
+
+.dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.header {
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.role {
+  font-size: 12px;
+  color: orange;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+}
+
+li {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: .2s;
+}
+
+li:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.upload-btn {
+  cursor: pointer;
+  font-size: 12px;
+  color: blue;
+}
+
+.toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="profile" onclick="toggleMenu()">
+    <img id="avatar" src="https://i.pravatar.cc/100">
+    <span class="badge">3</span>
+
+    <div class="dropdown" id="menu">
+      <div class="header">
+        <strong>Chua Dev</strong><br>
+        <small>chua@email.com</small><br>
+        <span class="role">Admin</span><br>
+        <label class="upload-btn">
+          Upload Foto
+          <input type="file" onchange="uploadImage(event)">
+        </label>
+      </div>
+
+      <ul>
+        <li><i class="fa fa-user"></i> Profile</li>
+        <li><i class="fa fa-cog"></i> Settings</li>
+        <li><i class="fa fa-envelope"></i> Messages</li>
+        <li><i class="fa fa-bell"></i> Notifications</li>
+
+        <li class="toggle">
+          <span><i class="fa fa-moon"></i> Dark Mode</span>
+          <input type="checkbox" onclick="toggleDark()">
+        </li>
+
+        <li style="color:red"><i class="fa fa-sign-out"></i> Logout</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleMenu() {
+  document.getElementById('menu').classList.toggle('active');
+}
+
+window.addEventListener('click', function(e) {
+  const profile = document.querySelector('.profile');
+  if (!profile.contains(e.target)) {
+    document.getElementById('menu').classList.remove('active');
+  }
+});
+
+function toggleDark() {
+  document.body.classList.toggle('dark');
+}
+
+function uploadImage(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('avatar').src = e.target.result;
+    }
+    reader.readAsDataURL(file);
+  }
+}
+</script>
+
+</body>
+</html>
